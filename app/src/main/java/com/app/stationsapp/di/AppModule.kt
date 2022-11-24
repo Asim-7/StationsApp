@@ -1,10 +1,12 @@
 package com.app.stationsapp.di
 
+import android.content.Context
 import com.app.stationsapp.respository.StationsRepository
 import com.app.stationsapp.respository.StationsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,5 +19,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideHelpRepository() = StationsRepositoryImpl() as StationsRepository
+    fun provideHelpRepository(@ApplicationContext context: Context) = StationsRepositoryImpl(context) as StationsRepository
 }

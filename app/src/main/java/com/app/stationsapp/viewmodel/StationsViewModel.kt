@@ -1,7 +1,9 @@
 package com.app.stationsapp.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.stationsapp.model.StationData
 import com.app.stationsapp.respository.StationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,8 +14,8 @@ class StationsViewModel @Inject constructor(
     private val repository: StationsRepository        // here the HelpRepository is an interface because it helps this view model to be tested with both DEFAULT and FAKE repository
 ) : ViewModel() {
 
-    private var _stationsList = mutableListOf<String>()
-    val stationsList: List<String>
+    private var _stationsList = mutableStateListOf<StationData>()
+    val stationsList: List<StationData>
         get() = _stationsList
 
     init {
@@ -23,6 +25,7 @@ class StationsViewModel @Inject constructor(
     private fun getStationData() {
         viewModelScope.launch {
             val rawStationsList = repository.getStationsData()
+            _stationsList.addAll(rawStationsList)
         }
     }
 }
