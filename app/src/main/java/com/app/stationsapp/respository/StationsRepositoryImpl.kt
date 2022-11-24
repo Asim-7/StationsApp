@@ -25,6 +25,9 @@ class StationsRepositoryImpl @Inject constructor(private val context: Context) :
             // Parse the raw data using Gson
             stationsList = Gson().fromJson(rawData, cityListType)
 
+            // filter data based in Netherlands only (NL)
+            stationsList = stationsList.filter { station -> station.land == "NL" }
+
         } catch (e: Exception) {
             // Handle exception
         } finally {
