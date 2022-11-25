@@ -17,6 +17,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import com.google.maps.android.compose.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,21 +42,38 @@ class MainActivity : ComponentActivity() {
                 position = CameraPosition.fromLatLngZoom(LatLng(52.087966, 5.113372), 12f)
             }
 
+            val refreshMarkers = {
+                val centerLocation = cameraPositionState.position.target
+                val topLeftLocation = cameraPositionState.projection?.visibleRegion?.farLeft ?: cameraPositionState.position.target
+                val radius = SphericalUtil.computeDistanceBetween(topLeftLocation, centerLocation)
+                viewModel.stationsWithin(centerLocation.latitude, centerLocation.longitude, radius)
+            }
+
             LaunchedEffect(Unit) {
                 multiplePermissionState.launchMultiplePermissionRequest()
+
+                if (!cameraPositionState.isMoving) {
+                    refreshMarkers()
+                }
             }
 
             val context = LocalContext.current
 
             StationsAppTheme {
                 if (multiplePermissionState.allPermissionsGranted) {
-                    Toast.makeText(context, "Permissions granted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show()
                     GoogleMap(
                         cameraPositionState = cameraPositionState,
                         properties = MapProperties(isMyLocationEnabled = true),
-                        uiSettings = MapUiSettings(compassEnabled = true)
+                        uiSettings = MapUiSettings(compassEnabled = true),
                     ) {
-                        GoogleMarkers()
+                        viewModel.stationsList.forEach { station ->
+                            Marker(
+                                state = rememberMarkerState(position = LatLng(station.lat, station.lng)),
+                                title = station.namen.kort,
+                                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                            )
+                        }
                     }
                 }
             }

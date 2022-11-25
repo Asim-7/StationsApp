@@ -74,6 +74,7 @@ dependencies {
     // Google maps
     implementation 'com.google.maps.android:maps-compose:2.7.2'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.4'
     // Permissions request
     implementation "com.google.accompanist:accompanist-permissions:0.27.1"
 }

@@ -18,14 +18,19 @@ class StationsViewModel @Inject constructor(
     val stationsList: List<StationData>
         get() = _stationsList
 
+    var rawStationsList: List<StationData> = listOf()
+
     init {
         getStationData()
     }
 
     private fun getStationData() {
         viewModelScope.launch {
-            val rawStationsList = repository.getStationsData()
-            _stationsList.addAll(rawStationsList)
+            rawStationsList = repository.getStationsData()
         }
+    }
+
+    fun stationsWithin(latitude: Double, longitude: Double, radius: Double) {
+        // TODO
     }
 }
