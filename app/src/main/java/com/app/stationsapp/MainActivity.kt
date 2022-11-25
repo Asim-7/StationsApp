@@ -66,6 +66,7 @@ class MainActivity : ComponentActivity() {
                         cameraPositionState = cameraPositionState,
                         properties = MapProperties(isMyLocationEnabled = true),
                         uiSettings = MapUiSettings(compassEnabled = true),
+                        onMapLoaded = refreshMarkers
                     ) {
                         viewModel.stationsList.forEach { station ->
                             Marker(

@@ -2,6 +2,7 @@ package com.app.stationsapp.util
 
 import com.app.stationsapp.model.StationData
 import com.google.android.gms.maps.model.LatLng
+import kotlin.math.*
 
 class SortStations(private var currentLoc: LatLng) : Comparator<StationData> {
     override fun compare(place1: StationData, place2: StationData): Int {
@@ -18,13 +19,7 @@ class SortStations(private var currentLoc: LatLng) : Comparator<StationData> {
         val radius = 6378137.0 // approximate Earth radius, *in meters*
         val deltaLat = toLat - fromLat
         val deltaLon = toLon - fromLon
-        val angle = 2 * Math.asin(
-            Math.sqrt(
-                Math.pow(Math.sin(deltaLat / 2), 2.0) +
-                        Math.cos(fromLat) * Math.cos(toLat) *
-                        Math.pow(Math.sin(deltaLon / 2), 2.0)
-            )
-        )
+        val angle = 2 * asin(sqrt(sin(deltaLat / 2).pow(2.0) + cos(fromLat) * cos(toLat) * sin(deltaLon / 2).pow(2.0)))
         return radius * angle
     }
 }
