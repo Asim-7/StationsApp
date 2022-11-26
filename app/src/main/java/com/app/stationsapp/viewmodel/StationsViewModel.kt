@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.stationsapp.model.StationData
 import com.app.stationsapp.respository.StationsRepository
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +20,8 @@ class StationsViewModel @Inject constructor(
     val stationsList: List<StationData>
         get() = _stationsList
 
-    var rawStationsList: List<StationData> = listOf()
+    private var allStationsList: List<StationData> = listOf()
+    private var stationsWithoutMarker: ArrayList<StationData> = ArrayList()
 
     init {
         getStationData()
@@ -26,11 +29,25 @@ class StationsViewModel @Inject constructor(
 
     private fun getStationData() {
         viewModelScope.launch {
-            rawStationsList = repository.getStationsData()
+            allStationsList = repository.getStationsData()
+            stationsWithoutMarker = ArrayList(allStationsList)
         }
     }
 
-    fun stationsWithin(latitude: Double, longitude: Double, radius: Double) {
-        // TODO
+    fun stationsWithin(latLngBound: LatLngBounds?) {
+        if (latLngBound != null && stationsWithoutMarker.isNotEmpty()) {
+            val newStations = ArrayList<StationData>()
+            val iterator = stationsWithoutMarker.iterator()
+            while (iterator.hasNext()) {
+                val station = iterator.next()
+                if (latLngBound.contains(LatLng(station.lat, station.lng))) {
+                    iterator.remove()
+                    newStations.add(station)
+                }
+            }
+            if (newStations.isNotEmpty()) {
+                _stationsList.addAll(newStations)
+            }
+        }
     }
 }

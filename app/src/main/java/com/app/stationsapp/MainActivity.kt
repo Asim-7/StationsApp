@@ -2,12 +2,10 @@ package com.app.stationsapp
 
 import android.Manifest
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.stationsapp.ui.theme.StationsAppTheme
@@ -17,7 +15,6 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.SphericalUtil
 import com.google.maps.android.compose.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,25 +40,19 @@ class MainActivity : ComponentActivity() {
             }
 
             val refreshMarkers = {
-                val centerLocation = cameraPositionState.position.target
-                val topLeftLocation = cameraPositionState.projection?.visibleRegion?.farLeft ?: cameraPositionState.position.target
-                val radius = SphericalUtil.computeDistanceBetween(topLeftLocation, centerLocation)
-                viewModel.stationsWithin(centerLocation.latitude, centerLocation.longitude, radius)
+                viewModel.stationsWithin(cameraPositionState.projection?.visibleRegion?.latLngBounds)
+            }
+
+            if (!cameraPositionState.isMoving) {
+                refreshMarkers()
             }
 
             LaunchedEffect(Unit) {
                 multiplePermissionState.launchMultiplePermissionRequest()
-
-                if (!cameraPositionState.isMoving) {
-                    refreshMarkers()
-                }
             }
-
-            val context = LocalContext.current
 
             StationsAppTheme {
                 if (multiplePermissionState.allPermissionsGranted) {
-                    Toast.makeText(context, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show()
                     GoogleMap(
                         cameraPositionState = cameraPositionState,
                         properties = MapProperties(isMyLocationEnabled = true),
