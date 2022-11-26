@@ -4,10 +4,10 @@ import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.app.stationsapp.model.StationData
 import com.app.stationsapp.ui.theme.StationsAppTheme
 import com.app.stationsapp.viewmodel.StationsViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -70,7 +71,6 @@ class MainActivity : ComponentActivity() {
                 val scaffoldState = rememberBottomSheetScaffoldState(
                     bottomSheetState = sheetState
                 )
-                val scope = rememberCoroutineScope()
 
                 BottomSheetScaffold(
                     scaffoldState = scaffoldState,
@@ -81,10 +81,19 @@ class MainActivity : ComponentActivity() {
                                 .height(300.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "Bottom Sheet", fontSize = 15.sp)
+                            val listState = rememberLazyListState()
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                state = listState,
+                                verticalArrangement = Arrangement.spacedBy(5.dp),
+                                contentPadding = PaddingValues(10.dp)
+                            ) {
+                                items(viewModel.allStationsList) { item ->
+                                    ListItem(stationData = item)
+                                }
+                            }
                         }
                     },
-                    sheetBackgroundColor = Color.Green,
                     sheetPeekHeight = 0.dp
                 ) {
                     if (multiplePermissionState.allPermissionsGranted) {
@@ -105,6 +114,8 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+                val scope = rememberCoroutineScope()
+
                 FloatingActionButton(
                     backgroundColor = Color.Red,
                     modifier = Modifier.padding(12.dp),
@@ -121,6 +132,19 @@ class MainActivity : ComponentActivity() {
                     Text(text = "Stations", modifier = Modifier.padding(5.dp), color = Color.White)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ListItem(stationData: StationData) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = stationData.namen.kort)
+            Text(text = "(${stationData.lat}, ${stationData.lng})", fontSize = 10.sp, modifier = Modifier.padding(start = 4.dp))
         }
     }
 }

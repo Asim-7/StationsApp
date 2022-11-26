@@ -20,7 +20,7 @@ class StationsViewModel @Inject constructor(
     val stationsList: List<StationData>
         get() = _stationsList
 
-    private var allStationsList: List<StationData> = listOf()
+    var allStationsList: List<StationData> = listOf()
     private var stationsWithoutMarker: ArrayList<StationData> = ArrayList()
 
     init {
