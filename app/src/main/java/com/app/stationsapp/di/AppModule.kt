@@ -3,6 +3,8 @@ package com.app.stationsapp.di
 import android.content.Context
 import com.app.stationsapp.respository.StationsRepository
 import com.app.stationsapp.respository.StationsRepositoryImpl
+import com.app.stationsapp.util.SortStations
+import com.google.android.gms.maps.model.LatLng
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,5 +21,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideHelpRepository(@ApplicationContext context: Context) = StationsRepositoryImpl(context) as StationsRepository
+    fun provideHelpRepository(@ApplicationContext context: Context, sortStations: SortStations) = StationsRepositoryImpl(context, sortStations) as StationsRepository
+
+    @Singleton
+    @Provides
+    fun provideSortStations() = SortStations(LatLng(52.087966, 5.113372))
 }

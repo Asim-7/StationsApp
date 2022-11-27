@@ -4,14 +4,13 @@ import android.content.Context
 import com.app.stationsapp.R
 import com.app.stationsapp.model.StationData
 import com.app.stationsapp.util.SortStations
-import com.google.android.gms.maps.model.LatLng
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.util.*
 import javax.inject.Inject
 
-class StationsRepositoryImpl @Inject constructor(private val context: Context) : StationsRepository {
+class StationsRepositoryImpl @Inject constructor(private val context: Context, private val sortStations: SortStations) : StationsRepository {
 
     override suspend fun getStationsData(): List<StationData> {
         var stationsList: List<StationData> = listOf()
@@ -32,7 +31,7 @@ class StationsRepositoryImpl @Inject constructor(private val context: Context) :
             stationsList = stationsList.filter { station -> station.land == "NL" }
 
             // sorting stations according to given point
-            Collections.sort(stationsList, SortStations(LatLng(52.087966, 5.113372)))
+            Collections.sort(stationsList, sortStations)
 
         } catch (e: Exception) {
             // Handle exception
