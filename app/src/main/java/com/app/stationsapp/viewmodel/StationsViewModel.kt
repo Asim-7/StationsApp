@@ -7,12 +7,9 @@ import com.app.stationsapp.model.StationData
 import com.app.stationsapp.respository.StationsRepository
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class StationsViewModel @Inject constructor(
+class StationsViewModel(
     private val repository: StationsRepository        // here the HelpRepository is an interface because it helps this view model to be tested with both DEFAULT and FAKE repository
 ) : ViewModel() {
 

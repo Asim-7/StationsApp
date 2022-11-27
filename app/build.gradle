@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -65,10 +64,11 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-    // Hilt DI
-    implementation "com.google.dagger:hilt-android:2.42"
-    kapt "com.google.dagger:hilt-compiler:2.43.2"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    // Koin DI
+    implementation "io.insert-koin:koin-android:3.2.0-beta-1"
+    implementation "io.insert-koin:koin-androidx-navigation:3.2.0-beta-1"
+    implementation "io.insert-koin:koin-androidx-compose:3.2.0-beta-1"
+    testImplementation "io.insert-koin:koin-test-junit4:3.2.0-beta-1"
     // GSON library
     implementation 'com.google.code.gson:gson:2.10'
     // Google maps

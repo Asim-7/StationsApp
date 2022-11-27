@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.stationsapp.model.StationData
 import com.app.stationsapp.ui.theme.StationsAppTheme
 import com.app.stationsapp.viewmodel.StationsViewModel
@@ -28,18 +27,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalPermissionsApi
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             StationsAppTheme {
-                MainApp(viewModel = hiltViewModel())
+                MainApp(viewModel = getViewModel())
             }
         }
     }

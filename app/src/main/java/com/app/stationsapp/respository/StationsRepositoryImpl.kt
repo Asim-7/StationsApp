@@ -8,9 +8,8 @@ import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.util.*
-import javax.inject.Inject
 
-class StationsRepositoryImpl @Inject constructor(private val context: Context, private val sortStations: SortStations) : StationsRepository {
+class StationsRepositoryImpl(private val context: Context, private val sortStations: SortStations) : StationsRepository {
 
     override suspend fun getStationsData(): List<StationData> {
         var stationsList: List<StationData> = listOf()

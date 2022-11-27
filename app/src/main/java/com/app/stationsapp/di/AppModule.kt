@@ -1,29 +1,28 @@
 package com.app.stationsapp.di
 
-import android.content.Context
 import com.app.stationsapp.respository.StationsRepository
 import com.app.stationsapp.respository.StationsRepositoryImpl
 import com.app.stationsapp.util.SortStations
+import com.app.stationsapp.viewmodel.StationsViewModel
 import com.google.android.gms.maps.model.LatLng
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 /**
  * In the module, dependencies as added as singleton, which can be reached where needed
  * */
-@Module
-@InstallIn(SingletonComponent::class)     // helps to keep the dependencies alive as long as app is alive
-object AppModule {
+val appModule = module {
 
-    @Singleton
-    @Provides
-    fun provideHelpRepository(@ApplicationContext context: Context, sortStations: SortStations) = StationsRepositoryImpl(context, sortStations) as StationsRepository
+    single<StationsRepository> {
+        StationsRepositoryImpl(androidContext(), get())
+    }
 
-    @Singleton
-    @Provides
-    fun provideSortStations() = SortStations(LatLng(52.087966, 5.113372))
+    single {
+        SortStations(LatLng(52.087966, 5.113372))
+    }
+
+    viewModel {
+        StationsViewModel(get())
+    }
 }
