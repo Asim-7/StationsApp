@@ -77,4 +77,10 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.4'
     // Permissions request
     implementation "com.google.accompanist:accompanist-permissions:0.27.1"
+    // Better unit test assertions
+    testImplementation "com.google.truth:truth:1.1.3"
+    // Coroutine unit test
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    // used for unit test thread rule
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 }

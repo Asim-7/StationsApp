@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(viewModel: StationsViewModel) {
 
+    // Location permissions are required for the app
     val multiplePermissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -55,12 +56,14 @@ fun MainApp(viewModel: StationsViewModel) {
         )
     )
 
+    // The data provided to the camera position is default station data
     val cameraPositionState = rememberCameraPositionState { position = CameraPosition.fromLatLngZoom(LatLng(52.087966, 5.113372), 12f) }
+    // Whenever user moves the camera / zoom in/out, stations are checked
     if (!cameraPositionState.isMoving) viewModel.stationsWithin(cameraPositionState.projection?.visibleRegion?.latLngBounds)
 
-    LaunchedEffect(Unit) { multiplePermissionState.launchMultiplePermissionRequest() }
+    LaunchedEffect(Unit) { multiplePermissionState.launchMultiplePermissionRequest() }  // Check the permission when app starts
 
-    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)    // default state of bottom sheet
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
 
     StationsBottomSheet(
@@ -70,7 +73,7 @@ fun MainApp(viewModel: StationsViewModel) {
         cameraPositionState = cameraPositionState
     )
 
-    AllStationsButton(sheetState = sheetState)
+    AllStationsButton(sheetState = sheetState)      // shows/hides list of stations shown in bottom sheet, sorted according to distance from default LatLong
 }
 
 @ExperimentalPermissionsApi
@@ -152,7 +155,7 @@ fun StationsMap(multiplePermissionState: MultiplePermissionsState, viewModel: St
                 viewModel.stationsWithin(cameraPositionState.projection?.visibleRegion?.latLngBounds)
             }
         ) {
-            viewModel.stationsList.forEach { station ->
+            viewModel.stationsList.forEach { station ->     // Markers are dynamically added if the map region is visible to user
                 Marker(
                     state = rememberMarkerState(position = LatLng(station.lat, station.lng)),
                     title = station.namen.kort,

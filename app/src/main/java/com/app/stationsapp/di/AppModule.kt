@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * In the module, dependencies as added as singleton, which can be reached where needed
+ * In this module, dependencies as added as singleton, which can be reached where needed
  * */
 val appModule = module {
 

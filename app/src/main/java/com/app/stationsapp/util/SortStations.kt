@@ -4,6 +4,9 @@ import com.app.stationsapp.model.StationData
 import com.google.android.gms.maps.model.LatLng
 import kotlin.math.*
 
+/**
+ * This class is needed to compare data for sorting
+ * */
 class SortStations(private var currentLoc: LatLng) : Comparator<StationData> {
     override fun compare(place1: StationData, place2: StationData): Int {
         val lat1: Double = place1.lat

@@ -9,6 +9,9 @@ import com.google.gson.Gson
 import java.io.BufferedReader
 import java.util.*
 
+/**
+* This is the implementation of real repository
+* */
 class StationsRepositoryImpl(private val context: Context, private val sortStations: SortStations) : StationsRepository {
 
     override suspend fun getStationsData(): List<StationData> {

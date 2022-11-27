@@ -24,6 +24,7 @@ class StationsViewModel(
         getStationData()
     }
 
+    // getting all station data from repository
     private fun getStationData() {
         viewModelScope.launch {
             allStationsList = repository.getStationsData()
@@ -31,6 +32,7 @@ class StationsViewModel(
         }
     }
 
+    // checks and add the stations which lie within the provided bounds
     fun stationsWithin(latLngBound: LatLngBounds?) {
         if (latLngBound != null && stationsWithoutMarker.isNotEmpty()) {
             val newStations = ArrayList<StationData>()
