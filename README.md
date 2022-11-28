@@ -1,5 +1,5 @@
 # StationsApp
-Add your Map Key in Manifest file boefore running the app.<br>
+<b>Add your Map Key in Manifest file bofore running the app.</b><br>
 - This repository is based on Jetpack Compose, Maps, MVVM, Unit Tests and Koin dependency injection.<br>
 - Staions of NL are sorted based on default LatLng.<br>
 - Only creates map markers if LatLng is visible to user on map, saves memory and overloading of data.<br>
